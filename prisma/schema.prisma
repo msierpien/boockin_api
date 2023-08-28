@@ -21,6 +21,8 @@ model Reserved {
   updated_at          String
   item_type_id        Int
   item_type           ReservedType @relation(fields: [item_type_id], references: [id])
+  user_id             Int
+  user                User         @relation(fields: [user_id], references: [id])
 }
 
 model ReservedType {
@@ -31,3 +33,12 @@ model ReservedType {
   updatedAt         DateTime @updatedAt @map("updated_at")
   reservedItems     Reserved[]
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  reserved  Reserved[]
+}
+
