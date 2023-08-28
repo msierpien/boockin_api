@@ -5,7 +5,6 @@ interface UpdateReservedTypeArgs {
   updatedAt: string;
 }
 
-
 export const updateReservedType: NonNullable<
   MutationResolvers["updateReservedType"]
 > = async (_parent, args, ctx) => {
@@ -13,7 +12,7 @@ export const updateReservedType: NonNullable<
   const updateDate: UpdateReservedTypeArgs = {
     type_name,
     updatedAt: new Date().toISOString(),
-  }
+  };
   if (description != undefined) {
     updateDate.description = description;
   }
@@ -23,7 +22,6 @@ export const updateReservedType: NonNullable<
       id: parseInt(id),
     },
     data: updateDate,
-
   });
   return reservedType;
 };

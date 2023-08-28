@@ -32,12 +32,20 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
+export type AuthPayload = {
+  __typename?: "AuthPayload";
+  token?: Maybe<Scalars["String"]["output"]>;
+  user?: Maybe<User>;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createReserved: Reserved;
   createReservedType?: Maybe<ReservedType>;
   deleteReserved?: Maybe<Array<Reserved>>;
   deleteReservedType?: Maybe<ReservedType>;
+  login?: Maybe<AuthPayload>;
+  signup?: Maybe<AuthPayload>;
   updateReserved: Reserved;
   updateReservedType?: Maybe<ReservedType>;
 };
@@ -63,6 +71,17 @@ export type MutationDeleteReservedTypeArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type MutationLoginArgs = {
+  email: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+};
+
+export type MutationSignupArgs = {
+  email: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+};
+
 export type MutationUpdateReservedArgs = {
   availability_status: Scalars["String"]["input"];
   daily_price: Scalars["Float"]["input"];
@@ -84,6 +103,7 @@ export type Query = {
   items: Array<Reserved>;
   reservedType?: Maybe<ReservedType>;
   reservedTypes?: Maybe<Array<Maybe<ReservedType>>>;
+  user?: Maybe<User>;
 };
 
 export type QueryItemArgs = {
@@ -92,6 +112,10 @@ export type QueryItemArgs = {
 
 export type QueryReservedTypeArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryUserArgs = {
+  userId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type Reserved = {
@@ -113,6 +137,14 @@ export type ReservedType = {
   id: Scalars["ID"]["output"];
   type_name: Scalars["String"]["output"];
   updatedAt: Scalars["String"]["output"];
+};
+
+export type User = {
+  __typename?: "User";
+  Reserved?: Maybe<Array<Maybe<Reserved>>>;
+  email: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -222,26 +254,42 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Mutation: ResolverTypeWrapper<{}>;
+  AuthPayload: ResolverTypeWrapper<Mapper<AuthPayload>>;
   String: ResolverTypeWrapper<Mapper<Scalars["String"]["output"]>>;
+  Mutation: ResolverTypeWrapper<{}>;
   Float: ResolverTypeWrapper<Mapper<Scalars["Float"]["output"]>>;
   ID: ResolverTypeWrapper<Mapper<Scalars["ID"]["output"]>>;
   Query: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Mapper<Scalars["Int"]["output"]>>;
   Reserved: ResolverTypeWrapper<Mapper<Reserved>>;
   ReservedType: ResolverTypeWrapper<Mapper<ReservedType>>;
+  User: ResolverTypeWrapper<Mapper<User>>;
   Boolean: ResolverTypeWrapper<Mapper<Scalars["Boolean"]["output"]>>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Mutation: {};
+  AuthPayload: Mapper<AuthPayload>;
   String: Mapper<Scalars["String"]["output"]>;
+  Mutation: {};
   Float: Mapper<Scalars["Float"]["output"]>;
   ID: Mapper<Scalars["ID"]["output"]>;
   Query: {};
+  Int: Mapper<Scalars["Int"]["output"]>;
   Reserved: Mapper<Reserved>;
   ReservedType: Mapper<ReservedType>;
+  User: Mapper<User>;
   Boolean: Mapper<Scalars["Boolean"]["output"]>;
+};
+
+export type AuthPayloadResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes["AuthPayload"] = ResolversParentTypes["AuthPayload"],
+> = {
+  token?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<
@@ -275,6 +323,18 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeleteReservedTypeArgs, "id">
+  >;
+  login?: Resolver<
+    Maybe<ResolversTypes["AuthPayload"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginArgs, "email" | "password">
+  >;
+  signup?: Resolver<
+    Maybe<ResolversTypes["AuthPayload"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignupArgs, "email" | "name" | "password">
   >;
   updateReserved?: Resolver<
     ResolversTypes["Reserved"],
@@ -315,6 +375,12 @@ export type QueryResolvers<
     Maybe<Array<Maybe<ResolversTypes["ReservedType"]>>>,
     ParentType,
     ContextType
+  >;
+  user?: Resolver<
+    Maybe<ResolversTypes["User"]>,
+    ParentType,
+    ContextType,
+    Partial<QueryUserArgs>
   >;
 };
 
@@ -363,9 +429,27 @@ export type ReservedTypeResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes["User"] = ResolversParentTypes["User"],
+> = {
+  Reserved?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Reserved"]>>>,
+    ParentType,
+    ContextType
+  >;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = Context> = {
+  AuthPayload?: AuthPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Reserved?: ReservedResolvers<ContextType>;
   ReservedType?: ReservedTypeResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
