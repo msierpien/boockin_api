@@ -29,7 +29,7 @@ const getUser = async (token: string) => {
 		const user = jwt.verify(token, process.env.APP_SECRET);
 		return user;
 	  }
-	  console.log("No token provided.");
+	
 	  return null;
 	} catch (error) {
 	  console.error("Token verification failed:", error.message);
@@ -43,13 +43,14 @@ const { url } = await startStandaloneServer(server, {
 	listen: { port: 4000 },
 
 	context: async ({req}) => {
-		// const token  = req.headers.auth || '';
-		// const user = await getUser(token);
+		const token  = req.headers.auth || '';
+		const user = await getUser(token);
 
 		
 		return {
 			
 			prisma,
+			user,
 		
 		};
 	},
