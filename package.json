@@ -1,0 +1,35 @@
+{
+	"name": "booking-api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"codegen": "graphql-codegen --config .graphqlrc.ts",
+		"postinstall": "pnpm codegen",
+		"dev": "tsx watch src/server.ts",
+		"seed": "tsx prisma/seed.ts"
+	},
+	"keywords": [],
+	"author": "Michał Sierpień <msierpien@rexbit.pl> (https://rexbit.pl/)",
+	"license": "MIT",
+	"devDependencies": {
+		"@eddeee888/gcg-typescript-resolver-files": "0.5.0",
+		"@graphql-codegen/cli": "4.0.1",
+		"@types/bcryptjs": "^2.4.2",
+		"@types/jsonwebtoken": "^9.0.2",
+		"graphql": "16.7.1",
+		"prettier": "3.0.0",
+		"prisma": "5.0.0",
+		"tsx": "3.12.7",
+		"typescript": "5.1.6"
+	},
+	"dependencies": {
+		"@apollo/server": "4.7.5",
+		"@graphql-tools/load-files": "7.0.0",
+		"@prisma/client": "5.0.0",
+		"bcryptjs": "^2.4.3",
+		"graphql-scalars": "1.22.2",
+		"jsonwebtoken": "^9.0.1"
+	}
+}

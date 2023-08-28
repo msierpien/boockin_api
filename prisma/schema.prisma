@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Reserved {
+  id                  Int           @id @default(autoincrement())
+  name                String
+  description         String?
+  availability_status String
+  daily_price         Float
+  created_at          String
+  updated_at          String
+  item_type_id        Int
+  item_type           ReservedType @relation(fields: [item_type_id], references: [id])
+}
+
+model ReservedType {
+  id                Int           @id @default(autoincrement())
+  type_name         String         
+  description       String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  reservedItems     Reserved[]
+}
