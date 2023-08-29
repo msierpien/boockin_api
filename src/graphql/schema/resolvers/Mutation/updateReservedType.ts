@@ -19,7 +19,7 @@ export const updateReservedType: NonNullable<
 
   const reservedType = await ctx.prisma.reservedType.update({
     where: {
-      id: parseInt(id),
+      id: id,
     },
     data: updateDate,
   });

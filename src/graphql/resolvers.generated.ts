@@ -9,8 +9,8 @@ import { login as Mutation_login } from "./schema/resolvers/Mutation/login";
 import { signup as Mutation_signup } from "./schema/resolvers/Mutation/signup";
 import { updateReserved as Mutation_updateReserved } from "./schema/resolvers/Mutation/updateReserved";
 import { updateReservedType as Mutation_updateReservedType } from "./schema/resolvers/Mutation/updateReservedType";
-import { item as Query_item } from "./schema/resolvers/Query/item";
-import { items as Query_items } from "./schema/resolvers/Query/items";
+import { reserved as Query_reserved } from "./schema/resolvers/Query/reserved";
+import { reservedById as Query_reservedById } from "./schema/resolvers/Query/reservedById";
 import { reservedType as Query_reservedType } from "./schema/resolvers/Query/reservedType";
 import { reservedTypes as Query_reservedTypes } from "./schema/resolvers/Query/reservedTypes";
 import { user as Query_user } from "./schema/resolvers/Query/user";
@@ -19,8 +19,8 @@ import { ReservedType } from "./schema/resolvers/ReservedType";
 import { User } from "./schema/resolvers/User";
 export const resolvers: Resolvers = {
   Query: {
-    item: Query_item,
-    items: Query_items,
+    reserved: Query_reserved,
+    reservedById: Query_reservedById,
     reservedType: Query_reservedType,
     reservedTypes: Query_reservedTypes,
     user: Query_user,

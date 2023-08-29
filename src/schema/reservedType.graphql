@@ -1,16 +1,16 @@
 extend type Query {
     reservedTypes: [ReservedType]
-    reservedType(id: ID!): ReservedType
+    reservedType(id: Int!): ReservedType
 }
 
 extend type Mutation {
     createReservedType(type_name: String!, description: String!): ReservedType
-    updateReservedType(id: ID!, type_name: String!, description: String): ReservedType
-    deleteReservedType(id: ID!): ReservedType
+    updateReservedType(id: Int!, type_name: String!, description: String): ReservedType
+    deleteReservedType(id: Int!): ReservedType
 }
 
 type ReservedType {
-    id: ID!
+    id: Int!
     type_name: String!
     description: String
     createdAt: String!

@@ -1,17 +1,17 @@
 extend type Query {
-  items: [Reserved!]!
-  item(id: ID!): [Reserved!]
+  reserved: [Reserved!]!
+  reservedById(id: Int!): Reserved!
 }
 
 extend type Mutation{
-  createReserved(name: String!, description: String, availability_status: String!, daily_price: Float!, item_type_id: ID!): Reserved!
-  updateReserved(id: ID!, name: String!, description: String, availability_status: String!, daily_price: Float!, item_type_id: ID!): Reserved!
-  deleteReserved(id: ID!): [Reserved!]
+  createReserved(name: String!, description: String, availability_status: String!, daily_price: Float!, item_type_id: Int!): Reserved!
+  updateReserved(id: Int!, name: String!, description: String, availability_status: String!, daily_price: Float!, item_type_id: ID!): Reserved!
+  deleteReserved(id: Int!): [Reserved!]
 
 }
   
 type Reserved {
-   id: ID!
+   id: Int!
    name: String!
    description: String
    availability_status: String!

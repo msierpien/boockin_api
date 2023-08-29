@@ -1,5 +1,5 @@
 extend type Query {
-  user(userId: Int): User
+  user(userId: Int!): User
 }
 
 extend type Mutation {
@@ -13,7 +13,7 @@ type AuthPayload {
 }
 
 type User {
-  id: ID!
+  id: Int!
   name: String!
   email: String!
   Reserved: [Reserved]
