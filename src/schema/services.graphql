@@ -1,0 +1,22 @@
+extend type Query {
+  services: [Service!]!
+  servicesById(id: Int!): Service!
+}
+
+extend type Mutation{
+  createService(name: String!, description: String, availability_status: String!, daily_price: Float!, service_type_id: Int!): Service!
+  updateService(id: Int!, name: String!, description: String, availability_status: String!, daily_price: Float!, service_type_id: ID!): Service!
+  deleteService(id: Int!): [Service!]
+
+}
+  
+type Service {
+   id: Int!
+   name: String!
+   description: String
+   availability_status: String!
+   daily_price: Float!
+   created_at: String!
+   updated_at: String!
+   service_type: ServiceType
+}

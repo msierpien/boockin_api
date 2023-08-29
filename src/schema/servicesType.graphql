@@ -1,0 +1,18 @@
+extend type Query {
+    reservedTypes: [ServiceType]
+    reservedType(id: Int!): ServiceType
+}
+
+extend type Mutation {
+    createServiceType(type_name: String!, description: String!): ServiceType
+    updateServiceType(id: Int!, type_name: String!, description: String): ServiceType
+    deleteServiceType(id: Int!): ServiceType
+}
+
+type ServiceType {
+    id: Int!
+    type_name: String!
+    description: String
+    createdAt: String!
+    updatedAt: String!
+}

@@ -1,0 +1,12 @@
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+  MODERATOR
+}
+
+type Role {
+  id: Int
+  name: UserRole
+  user: User
+}

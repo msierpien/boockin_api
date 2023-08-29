@@ -1,15 +1,18 @@
-import type { MutationResolvers } from "./../../../types.generated";
-interface UpdateReservedTypeArgs {
+import type {
+  MutationResolvers,
+  MutationUpdateServiceArgs,
+} from "./../../../types.generated";
+interface UpdateServiceTypeArgs {
   type_name: string;
   description?: string;
   updatedAt: string;
 }
 
-export const updateReservedType: NonNullable<
-  MutationResolvers["updateReservedType"]
+export const updateServiceType: NonNullable<
+  MutationResolvers["updateServiceType"]
 > = async (_parent, args, ctx) => {
   const { id, type_name, description } = args;
-  const updateDate: UpdateReservedTypeArgs = {
+  const updateDate: UpdateServiceTypeArgs = {
     type_name,
     updatedAt: new Date().toISOString(),
   };

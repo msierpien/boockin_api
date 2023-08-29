@@ -10,35 +10,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  CUSTOMER
+  MODERATOR
+}
 
-model Reserved {
-  id                  Int           @id @default(autoincrement())
+model Service {
+  id                  Int              @id @default(autoincrement())
   name                String
   description         String?
   availability_status String
   daily_price         Float
   created_at          String
   updated_at          String
-  item_type_id        Int
-  item_type           ReservedType @relation(fields: [item_type_id], references: [id])
+  service_type_id     Int
+  service_type        ServiceType      @relation(fields: [service_type_id], references: [id])
   user_id             Int
-  user                User         @relation(fields: [user_id], references: [id])
+  user                User             @relation(fields: [user_id], references: [id])
+  PricingService      PricingService[]
+  Reservation         Reservation[]
 }
 
-model ReservedType {
-  id                Int           @id @default(autoincrement())
-  type_name         String         
-  description       String?
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-  reservedItems     Reserved[]
+model ServiceType {
+  id           Int       @id @default(autoincrement())
+  type_name    String
+  description  String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  ServiceItems Service[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  reserved  Reserved[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  password    String
+  services    Service[]
+  reservation Reservation[]
+  customer    Customer?
+  roles       Role[]      
 }
 
+model Customer {
+  id         Int     @id @default(autoincrement())
+  user       User    @relation(fields: [userId], references: [id])
+  name       String?
+  lastName   String?
+  address    String?
+  city       String?
+  postalCode String?
+  phone      String?
+  userId     Int     @unique
+  // Inne pola dotyczące klientów
+}
+
+model Role {
+  id     Int      @id @default(autoincrement())
+  name   UserRole @default(CUSTOMER)
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model PricingService {
+  id        Int      @id @default(autoincrement())
+  service   Service  @relation(fields: [serviceId], references: [id])
+  serviceId Int
+  dateFrom  DateTime
+  dateTo    DateTime
+  price     Float
+}
+
+model Reservation {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          Int
+  service         Service  @relation(fields: [serviceId], references: [id])
+  serviceId       Int
+  reservationDate DateTime
+  status          String // np. "zarezerwowane", "odwołane", "ukończone"
+  // Inne pola dotyczące rezerwacji
+}

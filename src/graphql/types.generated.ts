@@ -40,34 +40,34 @@ export type AuthPayload = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  createReserved: Reserved;
-  createReservedType?: Maybe<ReservedType>;
-  deleteReserved?: Maybe<Array<Reserved>>;
-  deleteReservedType?: Maybe<ReservedType>;
+  createService: Service;
+  createServiceType?: Maybe<ServiceType>;
+  deleteService?: Maybe<Array<Service>>;
+  deleteServiceType?: Maybe<ServiceType>;
   login?: Maybe<AuthPayload>;
   signup?: Maybe<AuthPayload>;
-  updateReserved: Reserved;
-  updateReservedType?: Maybe<ReservedType>;
+  updateService: Service;
+  updateServiceType?: Maybe<ServiceType>;
 };
 
-export type MutationCreateReservedArgs = {
+export type MutationCreateServiceArgs = {
   availability_status: Scalars["String"]["input"];
   daily_price: Scalars["Float"]["input"];
   description?: InputMaybe<Scalars["String"]["input"]>;
-  item_type_id: Scalars["Int"]["input"];
   name: Scalars["String"]["input"];
+  service_type_id: Scalars["Int"]["input"];
 };
 
-export type MutationCreateReservedTypeArgs = {
+export type MutationCreateServiceTypeArgs = {
   description: Scalars["String"]["input"];
   type_name: Scalars["String"]["input"];
 };
 
-export type MutationDeleteReservedArgs = {
+export type MutationDeleteServiceArgs = {
   id: Scalars["Int"]["input"];
 };
 
-export type MutationDeleteReservedTypeArgs = {
+export type MutationDeleteServiceTypeArgs = {
   id: Scalars["Int"]["input"];
 };
 
@@ -82,16 +82,16 @@ export type MutationSignupArgs = {
   password: Scalars["String"]["input"];
 };
 
-export type MutationUpdateReservedArgs = {
+export type MutationUpdateServiceArgs = {
   availability_status: Scalars["String"]["input"];
   daily_price: Scalars["Float"]["input"];
   description?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["Int"]["input"];
-  item_type_id: Scalars["ID"]["input"];
   name: Scalars["String"]["input"];
+  service_type_id: Scalars["ID"]["input"];
 };
 
-export type MutationUpdateReservedTypeArgs = {
+export type MutationUpdateServiceTypeArgs = {
   description?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["Int"]["input"];
   type_name: Scalars["String"]["input"];
@@ -99,18 +99,18 @@ export type MutationUpdateReservedTypeArgs = {
 
 export type Query = {
   __typename?: "Query";
-  reserved: Array<Reserved>;
-  reservedById: Reserved;
-  reservedType?: Maybe<ReservedType>;
-  reservedTypes?: Maybe<Array<Maybe<ReservedType>>>;
+  reservedType?: Maybe<ServiceType>;
+  reservedTypes?: Maybe<Array<Maybe<ServiceType>>>;
+  services: Array<Service>;
+  servicesById: Service;
   user?: Maybe<User>;
 };
 
-export type QueryReservedByIdArgs = {
+export type QueryReservedTypeArgs = {
   id: Scalars["Int"]["input"];
 };
 
-export type QueryReservedTypeArgs = {
+export type QueryServicesByIdArgs = {
   id: Scalars["Int"]["input"];
 };
 
@@ -118,20 +118,27 @@ export type QueryUserArgs = {
   userId: Scalars["Int"]["input"];
 };
 
-export type Reserved = {
-  __typename?: "Reserved";
+export type Role = {
+  __typename?: "Role";
+  id?: Maybe<Scalars["Int"]["output"]>;
+  name?: Maybe<UserRole>;
+  user?: Maybe<User>;
+};
+
+export type Service = {
+  __typename?: "Service";
   availability_status: Scalars["String"]["output"];
   created_at: Scalars["String"]["output"];
   daily_price: Scalars["Float"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["Int"]["output"];
-  item_type?: Maybe<ReservedType>;
   name: Scalars["String"]["output"];
+  service_type?: Maybe<ServiceType>;
   updated_at: Scalars["String"]["output"];
 };
 
-export type ReservedType = {
-  __typename?: "ReservedType";
+export type ServiceType = {
+  __typename?: "ServiceType";
   createdAt: Scalars["String"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["Int"]["output"];
@@ -141,11 +148,14 @@ export type ReservedType = {
 
 export type User = {
   __typename?: "User";
-  Reserved?: Maybe<Array<Maybe<Reserved>>>;
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
+  roles?: Maybe<Array<Maybe<Role>>>;
+  service?: Maybe<Array<Maybe<Service>>>;
 };
+
+export type UserRole = "ADMIN" | "CUSTOMER" | "MODERATOR";
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -261,9 +271,11 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Mapper<Scalars["Int"]["output"]>>;
   ID: ResolverTypeWrapper<Mapper<Scalars["ID"]["output"]>>;
   Query: ResolverTypeWrapper<{}>;
-  Reserved: ResolverTypeWrapper<Mapper<Reserved>>;
-  ReservedType: ResolverTypeWrapper<Mapper<ReservedType>>;
+  Role: ResolverTypeWrapper<Mapper<Role>>;
+  Service: ResolverTypeWrapper<Mapper<Service>>;
+  ServiceType: ResolverTypeWrapper<Mapper<ServiceType>>;
   User: ResolverTypeWrapper<Mapper<User>>;
+  UserRole: ResolverTypeWrapper<Mapper<UserRole>>;
   Boolean: ResolverTypeWrapper<Mapper<Scalars["Boolean"]["output"]>>;
 };
 
@@ -276,8 +288,9 @@ export type ResolversParentTypes = {
   Int: Mapper<Scalars["Int"]["output"]>;
   ID: Mapper<Scalars["ID"]["output"]>;
   Query: {};
-  Reserved: Mapper<Reserved>;
-  ReservedType: Mapper<ReservedType>;
+  Role: Mapper<Role>;
+  Service: Mapper<Service>;
+  ServiceType: Mapper<ServiceType>;
   User: Mapper<User>;
   Boolean: Mapper<Scalars["Boolean"]["output"]>;
 };
@@ -297,32 +310,32 @@ export type MutationResolvers<
   ParentType extends
     ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = {
-  createReserved?: Resolver<
-    ResolversTypes["Reserved"],
+  createService?: Resolver<
+    ResolversTypes["Service"],
     ParentType,
     ContextType,
     RequireFields<
-      MutationCreateReservedArgs,
-      "availability_status" | "daily_price" | "item_type_id" | "name"
+      MutationCreateServiceArgs,
+      "availability_status" | "daily_price" | "name" | "service_type_id"
     >
   >;
-  createReservedType?: Resolver<
-    Maybe<ResolversTypes["ReservedType"]>,
+  createServiceType?: Resolver<
+    Maybe<ResolversTypes["ServiceType"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationCreateReservedTypeArgs, "description" | "type_name">
+    RequireFields<MutationCreateServiceTypeArgs, "description" | "type_name">
   >;
-  deleteReserved?: Resolver<
-    Maybe<Array<ResolversTypes["Reserved"]>>,
+  deleteService?: Resolver<
+    Maybe<Array<ResolversTypes["Service"]>>,
     ParentType,
     ContextType,
-    RequireFields<MutationDeleteReservedArgs, "id">
+    RequireFields<MutationDeleteServiceArgs, "id">
   >;
-  deleteReservedType?: Resolver<
-    Maybe<ResolversTypes["ReservedType"]>,
+  deleteServiceType?: Resolver<
+    Maybe<ResolversTypes["ServiceType"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationDeleteReservedTypeArgs, "id">
+    RequireFields<MutationDeleteServiceTypeArgs, "id">
   >;
   login?: Resolver<
     Maybe<ResolversTypes["AuthPayload"]>,
@@ -336,20 +349,20 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationSignupArgs, "email" | "name" | "password">
   >;
-  updateReserved?: Resolver<
-    ResolversTypes["Reserved"],
+  updateService?: Resolver<
+    ResolversTypes["Service"],
     ParentType,
     ContextType,
     RequireFields<
-      MutationUpdateReservedArgs,
-      "availability_status" | "daily_price" | "id" | "item_type_id" | "name"
+      MutationUpdateServiceArgs,
+      "availability_status" | "daily_price" | "id" | "name" | "service_type_id"
     >
   >;
-  updateReservedType?: Resolver<
-    Maybe<ResolversTypes["ReservedType"]>,
+  updateServiceType?: Resolver<
+    Maybe<ResolversTypes["ServiceType"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateReservedTypeArgs, "id" | "type_name">
+    RequireFields<MutationUpdateServiceTypeArgs, "id" | "type_name">
   >;
 };
 
@@ -358,27 +371,27 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = {
-  reserved?: Resolver<
-    Array<ResolversTypes["Reserved"]>,
-    ParentType,
-    ContextType
-  >;
-  reservedById?: Resolver<
-    ResolversTypes["Reserved"],
-    ParentType,
-    ContextType,
-    RequireFields<QueryReservedByIdArgs, "id">
-  >;
   reservedType?: Resolver<
-    Maybe<ResolversTypes["ReservedType"]>,
+    Maybe<ResolversTypes["ServiceType"]>,
     ParentType,
     ContextType,
     RequireFields<QueryReservedTypeArgs, "id">
   >;
   reservedTypes?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["ReservedType"]>>>,
+    Maybe<Array<Maybe<ResolversTypes["ServiceType"]>>>,
     ParentType,
     ContextType
+  >;
+  services?: Resolver<
+    Array<ResolversTypes["Service"]>,
+    ParentType,
+    ContextType
+  >;
+  servicesById?: Resolver<
+    ResolversTypes["Service"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryServicesByIdArgs, "id">
   >;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
@@ -388,10 +401,21 @@ export type QueryResolvers<
   >;
 };
 
-export type ReservedResolvers<
+export type RoleResolvers<
   ContextType = Context,
   ParentType extends
-    ResolversParentTypes["Reserved"] = ResolversParentTypes["Reserved"],
+    ResolversParentTypes["Role"] = ResolversParentTypes["Role"],
+> = {
+  id?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes["UserRole"]>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ServiceResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes["Service"] = ResolversParentTypes["Service"],
 > = {
   availability_status?: Resolver<
     ResolversTypes["String"],
@@ -406,20 +430,20 @@ export type ReservedResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  item_type?: Resolver<
-    Maybe<ResolversTypes["ReservedType"]>,
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  service_type?: Resolver<
+    Maybe<ResolversTypes["ServiceType"]>,
     ParentType,
     ContextType
   >;
-  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   updated_at?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ReservedTypeResolvers<
+export type ServiceTypeResolvers<
   ContextType = Context,
   ParentType extends
-    ResolversParentTypes["ReservedType"] = ResolversParentTypes["ReservedType"],
+    ResolversParentTypes["ServiceType"] = ResolversParentTypes["ServiceType"],
 > = {
   createdAt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   description?: Resolver<
@@ -438,14 +462,19 @@ export type UserResolvers<
   ParentType extends
     ResolversParentTypes["User"] = ResolversParentTypes["User"],
 > = {
-  Reserved?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Reserved"]>>>,
-    ParentType,
-    ContextType
-  >;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  roles?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Role"]>>>,
+    ParentType,
+    ContextType
+  >;
+  service?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Service"]>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -453,7 +482,8 @@ export type Resolvers<ContextType = Context> = {
   AuthPayload?: AuthPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  Reserved?: ReservedResolvers<ContextType>;
-  ReservedType?: ReservedTypeResolvers<ContextType>;
+  Role?: RoleResolvers<ContextType>;
+  Service?: ServiceResolvers<ContextType>;
+  ServiceType?: ServiceTypeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

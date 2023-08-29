@@ -1,30 +1,28 @@
 import type { MutationResolvers } from "./../../../types.generated";
-export const createReserved: NonNullable<
-  MutationResolvers["createReserved"]
+export const createService: NonNullable<
+  MutationResolvers["createService"]
 > = async (_parent, args, ctx) => {
-
-  
   try {
     const {
       name,
       description,
       availability_status,
       daily_price,
-      item_type_id,
+      service_type_id,
     } = args;
 
     if (!ctx.user) {
       throw new Error("Not authenticated");
     }
-    const reserved = await ctx.prisma.reserved.create({
+    const service = await ctx.prisma.service.create({
       data: {
         name,
         description,
         availability_status,
         daily_price,
-        item_type: {
+        service_type: {
           connect: {
-            id: item_type_id,
+            id: service_type_id,
           },
         },
         user: {
@@ -36,7 +34,7 @@ export const createReserved: NonNullable<
         updated_at: new Date().toISOString(),
       },
     });
-    return reserved;
+    return service;
   } catch (error) {
     throw new Error(error);
   }

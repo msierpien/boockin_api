@@ -1,43 +1,45 @@
 /* This file was automatically generated. DO NOT UPDATE MANUALLY. */
 import type { Resolvers } from "./types.generated";
 import { AuthPayload } from "./schema/resolvers/AuthPayload";
-import { createReserved as Mutation_createReserved } from "./schema/resolvers/Mutation/createReserved";
-import { createReservedType as Mutation_createReservedType } from "./schema/resolvers/Mutation/createReservedType";
-import { deleteReserved as Mutation_deleteReserved } from "./schema/resolvers/Mutation/deleteReserved";
-import { deleteReservedType as Mutation_deleteReservedType } from "./schema/resolvers/Mutation/deleteReservedType";
+import { createService as Mutation_createService } from "./schema/resolvers/Mutation/createService";
+import { createServiceType as Mutation_createServiceType } from "./schema/resolvers/Mutation/createServiceType";
+import { deleteService as Mutation_deleteService } from "./schema/resolvers/Mutation/deleteService";
+import { deleteServiceType as Mutation_deleteServiceType } from "./schema/resolvers/Mutation/deleteServiceType";
 import { login as Mutation_login } from "./schema/resolvers/Mutation/login";
 import { signup as Mutation_signup } from "./schema/resolvers/Mutation/signup";
-import { updateReserved as Mutation_updateReserved } from "./schema/resolvers/Mutation/updateReserved";
-import { updateReservedType as Mutation_updateReservedType } from "./schema/resolvers/Mutation/updateReservedType";
-import { reserved as Query_reserved } from "./schema/resolvers/Query/reserved";
-import { reservedById as Query_reservedById } from "./schema/resolvers/Query/reservedById";
+import { updateService as Mutation_updateService } from "./schema/resolvers/Mutation/updateService";
+import { updateServiceType as Mutation_updateServiceType } from "./schema/resolvers/Mutation/updateServiceType";
 import { reservedType as Query_reservedType } from "./schema/resolvers/Query/reservedType";
 import { reservedTypes as Query_reservedTypes } from "./schema/resolvers/Query/reservedTypes";
+import { services as Query_services } from "./schema/resolvers/Query/services";
+import { servicesById as Query_servicesById } from "./schema/resolvers/Query/servicesById";
 import { user as Query_user } from "./schema/resolvers/Query/user";
-import { Reserved } from "./schema/resolvers/Reserved";
-import { ReservedType } from "./schema/resolvers/ReservedType";
+import { Role } from "./schema/resolvers/Role";
+import { Service } from "./schema/resolvers/Service";
+import { ServiceType } from "./schema/resolvers/ServiceType";
 import { User } from "./schema/resolvers/User";
 export const resolvers: Resolvers = {
   Query: {
-    reserved: Query_reserved,
-    reservedById: Query_reservedById,
     reservedType: Query_reservedType,
     reservedTypes: Query_reservedTypes,
+    services: Query_services,
+    servicesById: Query_servicesById,
     user: Query_user,
   },
   Mutation: {
-    createReserved: Mutation_createReserved,
-    createReservedType: Mutation_createReservedType,
-    deleteReserved: Mutation_deleteReserved,
-    deleteReservedType: Mutation_deleteReservedType,
+    createService: Mutation_createService,
+    createServiceType: Mutation_createServiceType,
+    deleteService: Mutation_deleteService,
+    deleteServiceType: Mutation_deleteServiceType,
     login: Mutation_login,
     signup: Mutation_signup,
-    updateReserved: Mutation_updateReserved,
-    updateReservedType: Mutation_updateReservedType,
+    updateService: Mutation_updateService,
+    updateServiceType: Mutation_updateServiceType,
   },
 
   AuthPayload: AuthPayload,
-  Reserved: Reserved,
-  ReservedType: ReservedType,
+  Role: Role,
+  Service: Service,
+  ServiceType: ServiceType,
   User: User,
 };

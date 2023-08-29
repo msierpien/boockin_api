@@ -29,7 +29,7 @@ const getUser = async (token: string) => {
 		const user = jwt.verify(token, process.env.APP_SECRET);
 		return user;
 	  }
-	  console.log("No token provided.");
+	//   console.log("No token provided.");
 	  return null;
 	} catch (error) {
 	  console.error("Token verification failed:", error.message);

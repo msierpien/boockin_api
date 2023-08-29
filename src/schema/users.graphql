@@ -16,5 +16,6 @@ type User {
   id: Int!
   name: String!
   email: String!
-  Reserved: [Reserved]
+  service: [Service]
+  roles: [Role]
 }

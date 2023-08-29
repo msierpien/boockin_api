@@ -1,4 +1,4 @@
-import type { MutationResolvers } from "./../../../types.generated";
+import type { MutationResolvers } from "../../../types.generated";
 import bscrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
