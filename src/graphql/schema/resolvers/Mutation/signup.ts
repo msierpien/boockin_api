@@ -1,4 +1,4 @@
-import type { MutationResolvers } from "../../../../types.generated";
+import type { MutationResolvers } from "../../../types.generated";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -11,24 +11,27 @@ export const signup: NonNullable<MutationResolvers["signup"]> = async (
   const defaultRole = await ctx.prisma.role.findFirst({
     where: {
       name: "CUSTOMER",
-    },  
+    },
   });
 
-  console.log(defaultRole.id);
-
-
+  if (!defaultRole) {
+    throw new Error("Default role not found!");
+  }
 
   const user = await ctx.prisma.user.create({
     data: {
       ...args,
       password,
-      roles: {
-        connect: {
-          id: 1,
-        }
-      }
-    },
 
+    },
+  });
+
+
+  await ctx.prisma.userRole.create({
+    data: {
+      userId: user.id,
+      roleId: defaultRole.id,
+    },
   });
 
   const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET!, {

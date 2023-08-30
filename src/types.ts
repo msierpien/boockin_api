@@ -22,3 +22,9 @@ export type Mapper<T> = T;
 export type Context = {
 	prisma: import("@prisma/client").PrismaClient;
 };
+
+export enum UserRole {
+	ADMIN = "ADMIN",
+	USER = "USER",
+	CUSTOMER = "CUSTOMER",
+}

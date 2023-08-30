@@ -8,7 +8,7 @@
 		"codegen": "graphql-codegen --config .graphqlrc.ts",
 		"postinstall": "pnpm codegen",
 		"dev": "tsx watch src/server.ts",
-		"seed": "tsx prisma/seed.ts"
+		"seed": "tsx prisma/Seed/seed.ts"
 	},
 	"keywords": [],
 	"author": "Michał Sierpień <msierpien@rexbit.pl> (https://rexbit.pl/)",

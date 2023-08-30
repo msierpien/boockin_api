@@ -10,12 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMIN
-  CUSTOMER
-  MODERATOR
-}
-
 model Service {
   id                  Int              @id @default(autoincrement())
   name                String
@@ -49,7 +43,31 @@ model User {
   services    Service[]
   reservation Reservation[]
   customer    Customer?
-  roles       Role[]      
+  UserRole    UserRole[]
+}
+
+model UserRole {
+  userId Int
+  roleId Int
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model Role {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  UserRole UserRole[]
+}
+
+model PricingService {
+  id        Int      @id @default(autoincrement())
+  service   Service  @relation(fields: [serviceId], references: [id])
+  serviceId Int
+  dateFrom  DateTime
+  dateTo    DateTime
+  price     Float
 }
 
 model Customer {
@@ -62,23 +80,6 @@ model Customer {
   postalCode String?
   phone      String?
   userId     Int     @unique
-  // Inne pola dotyczące klientów
-}
-
-model Role {
-  id     Int      @id @default(autoincrement())
-  name   UserRole @default(CUSTOMER)
-  user   User     @relation(fields: [userId], references: [id])
-  userId Int
-}
-
-model PricingService {
-  id        Int      @id @default(autoincrement())
-  service   Service  @relation(fields: [serviceId], references: [id])
-  serviceId Int
-  dateFrom  DateTime
-  dateTo    DateTime
-  price     Float
 }
 
 model Reservation {

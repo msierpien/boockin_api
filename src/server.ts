@@ -32,7 +32,7 @@ const getUser = async (token: string) => {
 	//   console.log("No token provided.");
 	  return null;
 	} catch (error) {
-	  console.error("Token verification failed:", error.message);
+
 	  return null;
 	}
   };
